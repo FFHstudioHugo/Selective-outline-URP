@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-
+using UnityEditor;
 public class OutlineFeature : ScriptableRendererFeature
 {
     class OutlinePass : ScriptableRenderPass
@@ -93,8 +93,23 @@ public class OutlineFeature : ScriptableRendererFeature
             Debug.LogWarningFormat("Missing Outline Material");
             return;
         }
-        outlinePass.Setup(renderer.cameraColorTarget, RenderTargetHandle.CameraTarget);
-        renderer.EnqueuePass(outlinePass);
+#if UNITY_EDITOR
+
+        if (Lightmapping.isRunning == false)
+        {
+#endif
+
+
+            outlinePass.Setup(renderer.cameraColorTarget, RenderTargetHandle.CameraTarget);
+            renderer.EnqueuePass(outlinePass);
+
+#if UNITY_EDITOR  
+
+        }
+
+        else { }
+#endif
+
     }
 }
 
